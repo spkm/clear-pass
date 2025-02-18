@@ -17,7 +17,7 @@ class UpdateGuestUserByUsernameRequest extends Request implements HasBody
 
     public function __construct(protected GuestUser $guestUser, protected array $queryParameters = [])
     {
-        if($this->guestUser->username === null){
+        if ($this->guestUser->username === null) {
             throw new \Exception('Guest User Username is required');
         }
     }

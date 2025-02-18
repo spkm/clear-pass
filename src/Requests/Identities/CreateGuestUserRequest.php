@@ -15,13 +15,11 @@ class CreateGuestUserRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(protected GuestUser $guestUser, protected array $queryParameters = [])
-    {
-    }
+    public function __construct(protected GuestUser $guestUser, protected array $queryParameters = []) {}
 
     public function resolveEndpoint(): string
     {
-        return "/guest";
+        return '/guest';
     }
 
     public function defaultQuery(): array

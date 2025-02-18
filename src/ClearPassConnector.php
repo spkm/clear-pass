@@ -4,8 +4,8 @@ namespace spkm\ClearPass;
 
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Connector;
-use Saloon\Http\Response;
 use Saloon\Http\Request;
+use Saloon\Http\Response;
 use Saloon\PaginationPlugin\Contracts\HasPagination;
 use Saloon\PaginationPlugin\OffsetPaginator;
 use Saloon\Traits\OAuth2\ClientCredentialsGrant;
@@ -21,7 +21,6 @@ class ClearPassConnector extends Connector implements HasPagination
         $this->oauthConfig()->setClientId($clientId);
         $this->oauthConfig()->setClientSecret($clientSecret);
         $this->baseUrl = $baseUrl;
-
 
         // TODO securely cache the access token
         $authenticator = $this->getAccessToken();
@@ -58,7 +57,7 @@ class ClearPassConnector extends Connector implements HasPagination
 
             protected function isLastPage(Response $response): bool
             {
-                return $this->getOffset() >= (int)$response->json('count');
+                return $this->getOffset() >= (int) $response->json('count');
             }
 
             protected function getPageItems(Response $response, Request $request): array

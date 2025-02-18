@@ -6,7 +6,7 @@ trait TransformsGuestUser
 {
     protected function transformGuestUser(): array
     {
-        if (!isset($this->guestUser)) {
+        if (! isset($this->guestUser)) {
             throw new \RuntimeException('Property "guestUser" is not set in the consuming class.');
         }
 

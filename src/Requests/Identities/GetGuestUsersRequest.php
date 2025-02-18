@@ -10,7 +10,7 @@ class GetGuestUsersRequest extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 
-    public function __construct(protected array $queryParameters = []){}
+    public function __construct(protected array $queryParameters = []) {}
 
     public function resolveEndpoint(): string
     {
