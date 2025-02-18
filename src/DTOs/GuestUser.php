@@ -32,7 +32,6 @@ class GuestUser
         public ?string $visitor_name = null,
         public ?string $visitor_phone = null
     ) {
-        // Enforce password length constraint
         if (strlen($this->password) > 64) {
             throw new InvalidArgumentException('Password must not exceed 64 characters.');
         }

@@ -25,7 +25,7 @@ class ClearPassServiceProvider extends PackageServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/clearpass.php' => config_path('clearpass.php'),
-        ], 'clear-pass'); // Custom tag here
+        ], 'clear-pass');
     }
 
     public function provides()
