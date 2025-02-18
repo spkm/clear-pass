@@ -1,5 +1,5 @@
 {
-    "name": "spkm/clearpass",
+    "name": "spkm/clear-pass",
     "description": "Integrate with the ClearPass Guest API using SaloonPHP",
     "license": "MIT",
     "keywords": [
