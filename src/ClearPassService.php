@@ -2,8 +2,6 @@
 
 namespace spkm\ClearPass;
 
-use Saloon\Http\Request;
-
 class ClearPassService
 {
     protected ClearPassConnector $connector;
@@ -26,4 +24,3 @@ class ClearPassService
         throw new \BadMethodCallException("Method {$method} does not exist.");
     }
 }
-

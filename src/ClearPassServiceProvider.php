@@ -11,10 +11,10 @@ class ClearPassServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name('ClearPass')
-        ->hasConfigFile('clearpass')
-        ->hasInstallCommand(function(InstallCommand $command) {
-            $command->publishConfigFile();
-        });
+            ->hasConfigFile('clearpass')
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command->publishConfigFile();
+            });
 
         $this->app->singleton('clearpass', function ($app) {
             return new ClearPassService;
