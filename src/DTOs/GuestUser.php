@@ -19,6 +19,7 @@ class GuestUser
         public bool $enabled,
         public array $custom_fields = [],
         public ?int $id = null,
+        public ?string $current_state = null,
         public ?Carbon $create_time = null,
         public ?string $role_name = null,
         public ?GuestUserExpirationAction $do_expire = null,

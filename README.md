@@ -8,16 +8,18 @@ You can install this package via composer using:
 ```
 composer require spkm/clear-pass
 ```
+Publish the config file with:
+```
+php artisan vendor:publish --provider="spkm\ClearPass\ClearPassServiceProvider"
+```
 
 ### Usage
 
 ```php
-use spkm\ClearPass\ClearPassConnector;
+use spkm\ClearPass\Facades\ClearPass;
 use spkm\ClearPass\Requests\GetGuestUsersRequest;
 
-$connector = new ClearPassConnector($id, $secret, $base);
-$request = new GetGuestUsersRequest();
-$paginator = $connector->paginate($request);
+$paginator = ClearPass::paginate(new GetGuestUsersRequest());
 
 foreach ($paginator as $response) {
     $response->json();
