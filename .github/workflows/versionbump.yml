@@ -1,0 +1,53 @@
+name: Bump version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  releaseJob:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Calculate version
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          tag_prefix: v
+          dry_run: true
+
+      - name: Commit & push version bump
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          file_pattern: package*.json
+          commit_message: 'chore(release): Bump version to ${{ steps.tag_version.outputs.new_tag }}'
+          commit_user_name: GitHub Actions
+          commit_user_email: actions@github.com
+
+      - name: Bump version and push tag
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          default_bump: patch
+          tag_prefix: v
+
+      - name: Create GitHub Release
+        uses: fregante/release-with-changelog@v3
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          commit-template: '- {date}: {title} ← {hash}'
+          template: |
+            ### Changelog
+            {commits}
+
+            Compare: {range}
