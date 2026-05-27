@@ -17,9 +17,9 @@
     ],
     "require": {
         "php": ">=8.3",
-        "saloonphp/saloon": "^3.0",
-        "saloonphp/laravel-plugin": "^3.0",
-        "saloonphp/cache-plugin": "^3.0",
+        "saloonphp/saloon": "^4.0",
+        "saloonphp/laravel-plugin": "^4.0",
+        "saloonphp/cache-plugin": "^4.0",
         "saloonphp/pagination-plugin": "^2.0",
         "symfony/var-dumper": "^7.2",
         "spatie/laravel-package-tools": "^1.19"
