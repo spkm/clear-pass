@@ -1,0 +1,24 @@
+<?php
+
+namespace spkm\ClearPass\Requests\EnforcementProfile\VoIPProfile;
+
+use spkm\ClearPass\Requests\DeleteRequest;
+
+/**
+ * Delete a VoIP Profile: DELETE /enforcement-profile-dur/voip-profile/{product_name}/{voip_profile_id}.
+ */
+class DeleteVoIPProfileRequest extends DeleteRequest
+{
+    /**
+     * @param  array<string, mixed>  $options
+     */
+    public function __construct(protected string $productName, protected int $voipProfileId, array $options = [])
+    {
+        parent::__construct($options);
+    }
+
+    public function resolveEndpoint(): string
+    {
+        return '/enforcement-profile-dur/voip-profile/'.rawurlencode((string) $this->productName).'/'.$this->voipProfileId;
+    }
+}

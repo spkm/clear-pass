@@ -2,22 +2,18 @@
 
 namespace spkm\ClearPass\Requests\Identities;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-
-class DeleteGuestUserByUsernameRequest extends Request
+/**
+ * The first version's request to delete a guest account by username.
+ *
+ * @deprecated Use Identities\GuestUser\DeleteGuestUserByUsernameRequest (or ClearPass::identities()->guestUsers()).
+ */
+class DeleteGuestUserByUsernameRequest extends GuestUser\DeleteGuestUserByUsernameRequest
 {
-    protected Method $method = Method::DELETE;
-
-    public function __construct(protected string $username, protected array $queryParameters = []) {}
-
-    public function resolveEndpoint(): string
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(string $username, array $queryParameters = [])
     {
-        return "/guest/{$this->username}";
-    }
-
-    public function defaultQuery(): array
-    {
-        return $this->queryParameters;
+        parent::__construct($username, $queryParameters);
     }
 }

@@ -2,15 +2,9 @@
 
 namespace spkm\ClearPass\Requests\ApiOperations;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-
-class GetTokenPrivilegesRequest extends Request
-{
-    protected Method $method = Method::GET;
-
-    public function resolveEndpoint(): string
-    {
-        return '/oauth/privileges';
-    }
-}
+/**
+ * The first version's request for the token's privileges: GET /oauth/privileges.
+ *
+ * @deprecated Use ApiOperations\TokenPrivileges\GetTokenPrivilegesRequest (or ClearPass::apiOperations()->tokenPrivileges()).
+ */
+class GetTokenPrivilegesRequest extends TokenPrivileges\GetTokenPrivilegesRequest {}

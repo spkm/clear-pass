@@ -2,38 +2,21 @@
 
 namespace spkm\ClearPass\Requests\Identities;
 
-use Saloon\Contracts\Body\HasBody;
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-use Saloon\Traits\Body\HasJsonBody;
+use JsonSerializable;
 use spkm\ClearPass\DTOs\GuestUser;
-use spkm\ClearPass\Traits\TransformsGuestUser;
 
-class ReplaceGuestUserByUsernameRequest extends Request implements HasBody
+/**
+ * The first version's request: Replace a guest account by username, from a DTOs\GuestUser carrying its username.
+ *
+ * @deprecated Use Identities\GuestUser\ReplaceGuestUserByUsernameRequest (or ClearPass::identities()->guestUsers()).
+ */
+class ReplaceGuestUserByUsernameRequest extends \spkm\ClearPass\Requests\Identities\GuestUser\ReplaceGuestUserByUsernameRequest
 {
-    use HasJsonBody, TransformsGuestUser;
-
-    protected Method $method = Method::PUT;
-
-    public function __construct(protected GuestUser $guestUser, protected array $queryParameters = [])
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(GuestUser|JsonSerializable $guestUser, array $queryParameters = [])
     {
-        if ($this->guestUser->username === null) {
-            throw new \Exception('Guest User Username is required');
-        }
-    }
-
-    public function resolveEndpoint(): string
-    {
-        return "/guest/username/{$this->guestUser->username}";
-    }
-
-    public function defaultQuery(): array
-    {
-        return $this->queryParameters;
-    }
-
-    public function defaultBody(): array
-    {
-        return $this->transformGuestUser();
+        parent::__construct(CompatibleRequest::usernameOf($guestUser), $guestUser, $queryParameters);
     }
 }

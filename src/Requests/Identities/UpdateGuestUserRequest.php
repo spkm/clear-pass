@@ -2,38 +2,21 @@
 
 namespace spkm\ClearPass\Requests\Identities;
 
-use Saloon\Contracts\Body\HasBody;
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-use Saloon\Traits\Body\HasJsonBody;
+use JsonSerializable;
 use spkm\ClearPass\DTOs\GuestUser;
-use spkm\ClearPass\Traits\TransformsGuestUser;
 
-class UpdateGuestUserRequest extends Request implements HasBody
+/**
+ * The first version's request: Update some fields of a guest account, from a DTOs\GuestUser carrying its id.
+ *
+ * @deprecated Use Identities\GuestUser\UpdateGuestUserRequest (or ClearPass::identities()->guestUsers()).
+ */
+class UpdateGuestUserRequest extends \spkm\ClearPass\Requests\Identities\GuestUser\UpdateGuestUserRequest
 {
-    use HasJsonBody, TransformsGuestUser;
-
-    protected Method $method = Method::PATCH;
-
-    public function __construct(protected GuestUser $guestUser, protected array $queryParameters = [])
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(GuestUser|JsonSerializable $guestUser, array $queryParameters = [])
     {
-        if ($this->guestUser->id === null) {
-            throw new \Exception('Guest User ID is required');
-        }
-    }
-
-    public function resolveEndpoint(): string
-    {
-        return "/guest/{$this->guestUser->id}";
-    }
-
-    public function defaultQuery(): array
-    {
-        return $this->queryParameters;
-    }
-
-    public function defaultBody(): array
-    {
-        return $this->transformGuestUser();
+        parent::__construct(CompatibleRequest::idOf($guestUser), $guestUser, $queryParameters);
     }
 }

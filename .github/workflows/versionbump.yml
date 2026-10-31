@@ -1,46 +1,55 @@
 name: Bump version
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
+    branches: [main]
 
 jobs:
   releaseJob:
     name: Create Release
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+
+      # A commit tagged by hand (a major or minor release) gets no automatic patch tag on top.
+      - name: Check for an existing tag
+        id: existing
+        run: |
+          if git describe --exact-match --tags "${{ github.event.workflow_run.head_sha }}" > /dev/null 2>&1; then
+            echo "tagged=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tagged=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Calculate version
         id: tag_version
+        if: steps.existing.outputs.tagged == 'false'
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_sha: ${{ github.event.workflow_run.head_sha }}
           default_bump: patch
           tag_prefix: v
           dry_run: true
 
-      - name: Commit & push version bump
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: main
-          file_pattern: package*.json
-          commit_message: 'chore(release): Bump version to ${{ steps.tag_version.outputs.new_tag }}'
-          commit_user_name: GitHub Actions
-          commit_user_email: actions@github.com
-
       - name: Bump version and push tag
+        if: steps.existing.outputs.tagged == 'false'
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          commit_sha: ${{ github.event.workflow_run.head_sha }}
           default_bump: patch
           tag_prefix: v
 
       - name: Create GitHub Release
+        if: steps.existing.outputs.tagged == 'false'
         uses: fregante/release-with-changelog@v3
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}

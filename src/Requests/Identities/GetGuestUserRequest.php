@@ -2,21 +2,25 @@
 
 namespace spkm\ClearPass\Requests\Identities;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-
-class GetGuestUserRequest extends Request
+/**
+ * The first version's request for a guest account by id.
+ *
+ * @deprecated Use Identities\GuestUser\GetGuestUserRequest (or ClearPass::identities()->guestUsers()).
+ */
+class GetGuestUserRequest extends GuestUser\GetGuestUserRequest
 {
-    protected Method $method = Method::GET;
-
-    public function __construct(protected int $id, protected array $queryParameters = []) {}
-
-    public function resolveEndpoint(): string
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(int $id, protected array $queryParameters = [])
     {
-        return "/guest/{$this->id}";
+        parent::__construct($id);
     }
 
-    public function defaultQuery(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function defaultQuery(): array
     {
         return $this->queryParameters;
     }

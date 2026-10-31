@@ -2,27 +2,18 @@
 
 namespace spkm\ClearPass\Requests\PolicyElements;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-use Saloon\PaginationPlugin\Contracts\Paginatable;
-
-class GetRolesRequest extends Request implements Paginatable
+/**
+ * The first version's role list request: GET /role, 100 at a time with the count, as it sent.
+ *
+ * @deprecated Use PolicyElements\Role\GetRolesRequest (or ClearPass::policyElements()->roles()).
+ */
+class GetRolesRequest extends Role\GetRolesRequest
 {
-    protected Method $method = Method::GET;
-
-    public function __construct(protected array $queryParameters = []) {}
-
-    public function resolveEndpoint(): string
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(array $queryParameters = [])
     {
-        return '/role';
-    }
-
-    public function defaultQuery(): array
-    {
-        return array_merge([
-            'offset' => 0,
-            'limit' => 100,
-            'calculate_count' => true,
-        ], $this->queryParameters);
+        parent::__construct(array_merge(['offset' => 0, 'limit' => 100, 'calculate_count' => 'true'], $queryParameters));
     }
 }

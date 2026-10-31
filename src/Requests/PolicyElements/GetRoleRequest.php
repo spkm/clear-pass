@@ -2,21 +2,25 @@
 
 namespace spkm\ClearPass\Requests\PolicyElements;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-
-class GetRoleRequest extends Request
+/**
+ * The first version's request for a role by id.
+ *
+ * @deprecated Use PolicyElements\Role\GetRoleRequest (or ClearPass::policyElements()->roles()->find($id)).
+ */
+class GetRoleRequest extends Role\GetRoleRequest
 {
-    protected Method $method = Method::GET;
-
-    public function __construct(protected int $id, protected array $queryParameters = []) {}
-
-    public function resolveEndpoint(): string
+    /**
+     * @param  array<string, mixed>  $queryParameters
+     */
+    public function __construct(int $id, protected array $queryParameters = [])
     {
-        return "/role/{$this->id}";
+        parent::__construct($id);
     }
 
-    public function defaultQuery(): array
+    /**
+     * @return array<string, mixed>
+     */
+    protected function defaultQuery(): array
     {
         return $this->queryParameters;
     }

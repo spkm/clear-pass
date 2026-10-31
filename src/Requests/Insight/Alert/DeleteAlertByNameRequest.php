@@ -1,0 +1,24 @@
+<?php
+
+namespace spkm\ClearPass\Requests\Insight\Alert;
+
+use spkm\ClearPass\Requests\DeleteRequest;
+
+/**
+ * Delete an Insight alert configuration by name: DELETE /alert/{name}.
+ */
+class DeleteAlertByNameRequest extends DeleteRequest
+{
+    /**
+     * @param  array<string, mixed>  $options
+     */
+    public function __construct(protected string $name, array $options = [])
+    {
+        parent::__construct($options);
+    }
+
+    public function resolveEndpoint(): string
+    {
+        return '/alert/'.rawurlencode((string) $this->name);
+    }
+}

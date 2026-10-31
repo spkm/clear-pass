@@ -2,14 +2,23 @@
 
 namespace spkm\ClearPass\Enums;
 
-/*
- * do_expire: Integer that specifies the action to take when the expire time of the account is reached.
- * */
+/**
+ * What ClearPass does to a guest account when its expire_time is reached: the do_expire field.
+ */
 enum GuestUserExpirationAction: int
 {
-    case NONE = 0;             // No action, account does not expire
-    case DISABLE = 1;          // Disable account upon expiration
-    case DISABLE_AND_LOGOUT = 2; // Disable and log the user out
-    case DELETE = 3;           // Delete account upon expiration
-    case DELETE_AND_LOGOUT = 4; // Delete and log the user out
+    /** No action: the account does not expire. */
+    case NONE = 0;
+
+    /** Disable the account. */
+    case DISABLE = 1;
+
+    /** Disable the account and log the guest out. */
+    case DISABLE_AND_LOGOUT = 2;
+
+    /** Delete the account. */
+    case DELETE = 3;
+
+    /** Delete the account and log the guest out. */
+    case DELETE_AND_LOGOUT = 4;
 }
