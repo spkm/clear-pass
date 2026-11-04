@@ -1,0 +1,7 @@
+# Opens a pull request when an action pinned in .github/workflows has a new release, with its commit SHA updated.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
