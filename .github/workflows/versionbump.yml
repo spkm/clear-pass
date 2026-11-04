@@ -6,17 +6,23 @@ on:
     types: [completed]
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   releaseJob:
     name: Create Release
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       # A commit tagged by hand (a major or minor release) gets no automatic patch tag on top.
       - name: Check for an existing tag
@@ -31,7 +37,7 @@ jobs:
       - name: Calculate version
         id: tag_version
         if: steps.existing.outputs.tagged == 'false'
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
@@ -41,7 +47,7 @@ jobs:
 
       - name: Bump version and push tag
         if: steps.existing.outputs.tagged == 'false'
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
         with:
           github_token: ${{ secrets.PAT_GITHUB_TOKEN }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
@@ -50,7 +56,7 @@ jobs:
 
       - name: Create GitHub Release
         if: steps.existing.outputs.tagged == 'false'
-        uses: fregante/release-with-changelog@v3
+        uses: fregante/release-with-changelog@779fd5e658f82e5b11b1c0a352a6838d3bd8f67f # v3
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           token: ${{ secrets.PAT_GITHUB_TOKEN }}
