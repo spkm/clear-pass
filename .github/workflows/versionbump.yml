@@ -37,7 +37,7 @@ jobs:
       - name: Calculate version
         id: tag_version
         if: steps.existing.outputs.tagged == 'false'
-        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
+        uses: mathieudutour/github-tag-action@af99e60ce8132224b8e6ebab5023449fe256ed46 # v7.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
@@ -47,7 +47,7 @@ jobs:
 
       - name: Bump version and push tag
         if: steps.existing.outputs.tagged == 'false'
-        uses: mathieudutour/github-tag-action@a22cf08638b34d5badda920f9daf6e72c477b07b # v6.2
+        uses: mathieudutour/github-tag-action@af99e60ce8132224b8e6ebab5023449fe256ed46 # v7.0.0
         with:
           github_token: ${{ secrets.PAT_GITHUB_TOKEN }}
           commit_sha: ${{ github.event.workflow_run.head_sha }}
